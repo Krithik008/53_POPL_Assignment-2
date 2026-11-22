@@ -56,5 +56,3 @@
 (define (print-height-and-leaves tree)
   (display (list (tree-height tree) (count-leaves tree)))
   (newline))
-
-\n

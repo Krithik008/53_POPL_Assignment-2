@@ -57,6 +57,12 @@
       (begin (display "PASS: ") (display description) (newline))
       (begin (display "FAIL: ") (display description) (newline))))
 
+(define (make-sequence size)
+  (let loop ((next size) (result '()))
+    (if (= next 0)
+        result
+        (loop (- next 1) (cons next result)))))
+
 (define (run-tests)
   (check-equal "insert example 1"
                '((42 1 2) (3 4 5) (42 6) (42))
@@ -83,7 +89,7 @@
          (let loop ((count 100) (result '(1)))
            (if (= count 0) result (loop (- count 1) (list result)))))
         (deep-expected
-         (let loop ((count 100) (result '(1)))
+         (let loop ((count 100) (result '(0 1)))
            (if (= count 0) result
                (loop (- count 1) (list 0 result))))))
     (check-equal "nested list reaches depth 100" deep-expected
@@ -92,6 +98,12 @@
                '(99 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)
                (insert-if-short 99 '(1 2 3 4 5 6 7 8 9 10
                                       11 12 13 14 15 16 17 18 19 20) 21))
+  (let ((long-list (make-sequence 10000)))
+    (check-equal "flat list of 10,000 elements" #t
+                 (let ((result (insert-if-short 99 long-list 10001)))
+                   (and (= (my-length result) 10001)
+                        (= (car result) 99)
+                        (equal? (cdr result) long-list)))))
   (check-equal "print-insert-result reads three values and prints one line"
                "((42 1 2) (3 4 5) (42 6) (42))\n"
                (with-output-to-string
