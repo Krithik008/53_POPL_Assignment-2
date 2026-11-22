@@ -15,7 +15,8 @@ solve(Solution) :-
     clue(5, Solution),
     clue(6, Solution),
     clue(7, Solution),
-    clue(8, Solution).
+    clue(8, Solution),
+    clue(9, Solution).
 
 clue(1, Solution) :-
     member(p(Name, Dept, _, 'AI'), Solution),
@@ -50,6 +51,10 @@ clue(7, Solution) :-
 clue(8, Solution) :-
     member(p(_, research, Lang, data), Solution),
     Lang \= javascript.
+
+% CLUE 9: The person who writes Python works on the AI project.
+clue(9, Solution) :-
+    member(p(_, _, python, 'AI'), Solution).
 
 base_solution(Solution) :-
     permutation([research,development,design,testing], [D1,D2,D3,D4]),
