@@ -27,3 +27,40 @@ combine_expr(/, Left, Right, Value) :-
     Right =\= 0,
     Left mod Right =:= 0,
     Value is Left // Right.
+
+% expr_to_string(Expr, String) holds when String is the canonical,
+% no-space rendering of the expression tree Expr.
+expr_to_string(Expr, String) :-
+    expr_str(Expr, 0, root, String).
+
+% expr_str(Expr, ParentPrec, Side, String) holds when String renders Expr
+% with parentheses chosen for its position under ParentPrec.
+expr_str(Number, _, _, String) :-
+    integer(Number),
+    with_output_to(string(String), write(Number)).
+expr_str(e(Operator, Left, Right), ParentPrec, Side, String) :-
+    operator_precedence(Operator, Prec),
+    expr_str(Left, Prec, left, LeftString),
+    expr_str(Right, Prec, right, RightString),
+    with_output_to(string(OperatorString), write(Operator)),
+    string_concat(LeftString, OperatorString, LeftAndOperator),
+    string_concat(LeftAndOperator, RightString, Body),
+    (   needs_parentheses(Prec, ParentPrec, Side)
+    ->  string_concat("(", Body, OpenBody),
+        string_concat(OpenBody, ")", String)
+    ;   String = Body
+    ).
+
+% operator_precedence(Operator, Precedence) holds for the specified
+% arithmetic precedence levels.
+operator_precedence(+, 1).
+operator_precedence(-, 1).
+operator_precedence(*, 2).
+operator_precedence(/, 2).
+
+% needs_parentheses(ChildPrec, ParentPrec, Side) holds when the child
+% expression must be parenthesized under the canonical formatting rules.
+needs_parentheses(ChildPrec, ParentPrec, left) :-
+    ChildPrec < ParentPrec.
+needs_parentheses(ChildPrec, ParentPrec, right) :-
+    ChildPrec =< ParentPrec.
