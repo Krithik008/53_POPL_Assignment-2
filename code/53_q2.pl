@@ -64,3 +64,15 @@ needs_parentheses(ChildPrec, ParentPrec, left) :-
     ChildPrec < ParentPrec.
 needs_parentheses(ChildPrec, ParentPrec, right) :-
     ChildPrec =< ParentPrec.
+
+% generate_equation(List, Equation) holds when Equation divides List at
+% one boundary and its two ordered expressions have equal integer values.
+generate_equation(List, Equation) :-
+    split(List, LeftNumbers, RightNumbers),
+    build_expr(LeftNumbers, LeftExpr, LeftValue),
+    build_expr(RightNumbers, RightExpr, RightValue),
+    LeftValue =:= RightValue,
+    expr_to_string(LeftExpr, LeftString),
+    expr_to_string(RightExpr, RightString),
+    string_concat(LeftString, "=", LeftAndEquals),
+    string_concat(LeftAndEquals, RightString, Equation).
