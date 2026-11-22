@@ -22,19 +22,22 @@
         (loop (cdr remaining)
               (cons (function (car remaining)) result)))))
 
-; insert-if-short inserts x into each original list shorter than n.
+; make-inserter returns a function that inserts x into lists passing len-ok?.
+(define (make-inserter x len-ok?)
+  (letrec ((insert
+            (lambda (lst)
+              (let ((processed
+                     (my-map
+                      (lambda (element)
+                        (if (or (pair? element) (null? element))
+                            (insert element)
+                            element))
+                      lst)))
+                (if (len-ok? (my-length lst))
+                    (cons x processed)
+                    processed)))))
+    insert))
+
+; insert-if-short inserts x into every list shorter than n at every depth.
 (define (insert-if-short x lst n)
-  (if (< (my-length lst) n)
-      (cons x
-            (my-map
-             (lambda (element)
-               (if (or (pair? element) (null? element))
-                   (insert-if-short x element n)
-                   element))
-             lst))
-      (my-map
-       (lambda (element)
-         (if (or (pair? element) (null? element))
-             (insert-if-short x element n)
-             element))
-       lst)))
+  ((make-inserter x (lambda (len) (< len n))) lst))
