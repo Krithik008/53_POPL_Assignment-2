@@ -21,3 +21,20 @@
         (my-reverse result)
         (loop (cdr remaining)
               (cons (function (car remaining)) result)))))
+
+; insert-if-short inserts x into each original list shorter than n.
+(define (insert-if-short x lst n)
+  (if (< (my-length lst) n)
+      (cons x
+            (my-map
+             (lambda (element)
+               (if (or (pair? element) (null? element))
+                   (insert-if-short x element n)
+                   element))
+             lst))
+      (my-map
+       (lambda (element)
+         (if (or (pair? element) (null? element))
+             (insert-if-short x element n)
+             element))
+       lst)))
