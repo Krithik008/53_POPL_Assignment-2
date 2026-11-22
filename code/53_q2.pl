@@ -76,3 +76,15 @@ generate_equation(List, Equation) :-
     expr_to_string(RightExpr, RightString),
     string_concat(LeftString, "=", LeftAndEquals),
     string_concat(LeftAndEquals, RightString, Equation).
+
+% all_equations(List, Equations) holds when Equations is the sorted set
+% of canonical valid equations that can be generated from List.
+all_equations(List, Equations) :-
+    findall(Equation, generate_equation(List, Equation), Found),
+    sort(Found, Equations).
+
+% count_equations(List, Count) holds when Count is the number of distinct
+% valid equations generated from List.
+count_equations(List, Count) :-
+    all_equations(List, Equations),
+    length(Equations, Count).
