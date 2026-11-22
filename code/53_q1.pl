@@ -83,7 +83,11 @@ main :-
     member(p('Ben',   DB, LB, PB), Solution),
     member(p('Carla', DC, LC, PC), Solution),
     member(p('Dana',  DD, LD, PD), Solution),
-    write('Alex'),  write(' = '), write([DA, LA, PA]), nl,
-    write('Ben'),   write(' = '), write([DB, LB, PB]), nl,
-    write('Carla'), write(' = '), write([DC, LC, PC]), nl,
-    write('Dana'),  write(' = '), write([DD, LD, PD]), nl.
+    atomic_list_concat([DA, LA, PA], ', ', SA),
+    atomic_list_concat([DB, LB, PB], ', ', SB),
+    atomic_list_concat([DC, LC, PC], ', ', SC),
+    atomic_list_concat([DD, LD, PD], ', ', SD),
+    format('Alex = [~w]~n',  [SA]),
+    format('Ben = [~w]~n',   [SB]),
+    format('Carla = [~w]~n', [SC]),
+    format('Dana = [~w]~n',  [SD]).
