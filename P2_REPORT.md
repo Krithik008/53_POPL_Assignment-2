@@ -17,13 +17,9 @@ The test file is `tests/test_q2.pl`. Run it from the repository root with:
 swipl -q -f code/53_q2.pl -f tests/test_q2.pl -g run_tests -t halt
 ```
 
-The checks cover all four `[4,2]` expression trees, the eight canonical string
-examples, generation failure for inputs with no valid equation or fewer than
-two numbers, and the three required `all_equations/2` examples. The expected
-results include seven sorted equations for `[4,2,5,3]`, no equations for
-`[2,3,4]`, and `["2*4=8"]` for `[2,4,8]`; the first input's count is 7.
-
-Runtime verification was not completed in this environment. SWI-Prolog was not
-installed; Windows Application Control blocked launching its official
-installer. The command above should be run on a machine with SWI-Prolog 9.x to
-confirm the tests pass.
+All 17 checks passed in WSL with SWI-Prolog 9.2.9. They cover all four `[4,2]`
+expression trees, the eight canonical string examples, generation failure for
+inputs with no valid equation or fewer than two numbers, and the three required
+`all_equations/2` examples. The results are seven sorted equations for
+`[4,2,5,3]`, no equations for `[2,3,4]`, and `["2*4=8"]` for `[2,4,8]`; the
+first input's count is 7.
