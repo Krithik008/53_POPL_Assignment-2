@@ -41,3 +41,11 @@
 ; insert-if-short inserts x into every list shorter than n at every depth.
 (define (insert-if-short x lst n)
   ((make-inserter x (lambda (len) (< len n))) lst))
+
+; print-insert-result reads x, lst, and n, then displays the transformed list.
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
