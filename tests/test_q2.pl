@@ -1,3 +1,5 @@
+:- ensure_loaded('code/53_q2.pl').
+
 % run_tests/0 runs the P2 acceptance checks and reports each result.
 run_tests :-
     run_case("build_expr/3 enumerates all [4,2] expressions",
